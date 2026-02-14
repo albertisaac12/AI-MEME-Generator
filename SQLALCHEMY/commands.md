@@ -151,3 +151,63 @@ alter table people add constraint unique_lastname unique(p_id);
 -- Drop the constraint
 alter table people drop constraint unique_lastname;
 ```
+
+## Advanced Querying and Aggregates
+Complex data retrieval, filtering, and summarization.
+
+```sql
+-- Re-create table with Enum type
+drop table if exists people;
+create table if not exists people (
+    p_id integer primary key auto_increment,
+    p_name varchar(255),
+    p_age integer,
+    p_height float,
+    p_gender enum("male", "female")
+);
+
+-- Bulk insert with mixed data
+insert into people (p_name, p_age, p_height, p_gender) values
+    ("Mike", 55, 188, "male"),
+    ("Anna", 55, 182, "female"),
+    ("Lisa", 22, 167, "female"),
+    ("Bob", 34, 178, "male"),
+    ("John", 29, 180, "male"),
+    ("Jeff", 89, 182, "male"),
+    ("Angela", 77, 180, "female"),
+    ("Samuel", 55, 175, "male"),
+    ("Kate", 27, 167, "female"),
+    ("Andrew", 23, NULL, "male"),
+    ("Jim", 65, 187, "male");
+
+-- Insert single record
+insert into people (p_name, p_age, p_height, p_gender) values ("Mike", 55, 188, "male");
+
+-- Distinct values (remove duplicates in result)
+select distinct p_gender from people where p_age > 30;
+
+-- Filter by list of values
+select * from people where p_age in (55, 65);
+
+-- Pattern matching (contains "n")
+select * from people where p_name like "%n%";
+
+-- Aliases (rename columns in output)
+select p_name as "Name", p_age as "Age" from people;
+
+-- Aggregates (Sum, Average, Count)
+select sum(p_age) from people;
+select sum(p_age) as "Sum of Age" from people;
+select avg(p_height) from people where p_gender = "male";
+
+-- Grouping data
+select p_gender, p_age, avg(p_height), count(p_gender) 
+from people 
+group by p_gender, p_age;
+
+-- Ordering results
+select * from people order by p_age desc, p_height desc;
+
+-- Limiting results
+select * from people order by p_age limit 5;
+```
