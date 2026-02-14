@@ -104,3 +104,50 @@ alter table people add column p_weight float;
 -- Remove a column
 alter table people drop column p_weight;
 ```
+
+## Advanced Constraints and Table Operations
+Advanced table features including constraints and schema modifications.
+
+```sql
+-- Drop table if exists to start fresh
+drop table if exists people;
+
+-- Create table with detailed constraints
+create table if not exists people (
+    p_id integer primary key auto_increment,
+    p_name varchar(255) not null,
+    p_age integer default 21,
+    p_ssn char(32) unique,
+    constraint age_constraint check (p_age >= 0 and p_age < 200)
+);
+
+-- Insert with explicit ID
+insert into people (p_id, p_name) values (1, "Mike"); 
+
+-- Insert with all values
+insert into people (p_name, p_age, p_ssn) values ("John", 199, "AH312432");
+
+-- Insert multiple records using defaults
+insert into people (p_name) values ("Mike"), ("John");
+
+-- Drop table to recreate with different structure
+drop table if exists people;
+
+-- Re-create table with composite unique constraint
+create table if not exists people (
+    p_id integer primary key auto_increment,
+    p_firstname varchar(255),
+    p_lastname varchar(255),
+    constraint blajj unique(p_firstname, p_lastname)
+);
+
+-- Insert testing composite unique
+insert into people (p_firstname, p_lastname) values ("Mike", "Smith"), ("John", "Smith");
+insert into people (p_firstname, p_lastname) values ("Mike", "Stone"), ("John", "Stone");
+
+-- Add unique constraint to existing table
+alter table people add constraint unique_lastname unique(p_id);
+
+-- Drop the constraint
+alter table people drop constraint unique_lastname;
+```
