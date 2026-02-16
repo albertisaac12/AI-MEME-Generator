@@ -56,3 +56,13 @@ SQL is the language used to talk to databases.
 
 *   **ORDER BY**: Sorts the result set. Default is Ascending (ASC). Use `DESC` for Descending.
 *   **LIMIT**: Restricts the number of rows returned.
+
+## Joins
+
+Combine rows from two or more tables based on a related column between them.
+
+*   **INNER JOIN**: Returns records that have matching values in both tables.
+*   **LEFT JOIN**: Returns all records from the left table, and the matched records from the right table.
+*   **RIGHT JOIN**: Returns all records from the right table, and the matched records from the left table.
+*   **FULL JOIN**: Returns all records when there is a match in either left or right table.
+*   **Self Join**: A regular join, but the table is joined with itself.

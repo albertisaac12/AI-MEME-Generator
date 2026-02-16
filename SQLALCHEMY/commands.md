@@ -210,4 +210,16 @@ select * from people order by p_age desc, p_height desc;
 
 -- Limiting results
 select * from people order by p_age limit 5;
+
+## Complex Joins
+Join multiple tables to retrieve related data.
+
+```sql
+-- Select names of two people and the thing they share ownership of
+select p1.p_name as Person1, p2.p_name as Person2, t1.t_name as SharedThings
+from ownership o1
+join ownership o2 on o1.o_thing = o2.o_thing and o1.o_owner <> o2.o_owner
+join people p1 on p1.p_id = o1.o_owner
+join people p2 on p2.p_id = o2.o_owner
+join things t1 on o1.o_thing = t1.t_id and o1.o_owner < o2.o_owner;
 ```
