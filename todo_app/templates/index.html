@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-12">
+        <h1 class="display-4 text-center">My Tasks</h1>
+        <div class="text-end">
+            <a href="{{ url_for('main.add') }}" class="btn btn-success">Add New Task</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for todo in todos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 {% if todo.completed %}border-success{% endif %}">
+            <div class="card-body">
+                <h5 class="card-title {% if todo.completed %}text-decoration-line-through text-muted{% endif %}">
+                    {{ todo.title }}
+                </h5>
+                <p class="card-text text-muted">{{ todo.description if todo.description else '' }}</p>
+                <small class="text-muted">Created: {{ todo.created_at.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between">
+                <form action="{{ url_for('main.toggle', id=todo.id) }}" method="POST" class="d-inline">
+                    <button type="submit"
+                        class="btn btn-sm {% if todo.completed %}btn-outline-warning{% else %}btn-outline-success{% endif %}">
+                        {% if todo.completed %}Undo{% else %}Complete{% endif %}
+                    </button>
+                </form>
+                <div>
+                    <a href="{{ url_for('main.edit', id=todo.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <form action="{{ url_for('main.delete', id=todo.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            No tasks found. Get started by adding one!
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
